@@ -5,15 +5,15 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver # database driver
+    url: jdbc:mysql://localhost:3306/scloud?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul # database url
+    username: root # database username
+    password: 1234 # database password
   jpa:
     generate-ddl: true
-    database: h2
+    database: mysql
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
 
 eureka:
   instance:

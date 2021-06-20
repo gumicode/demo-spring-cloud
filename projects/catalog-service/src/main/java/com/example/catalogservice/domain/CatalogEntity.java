@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,7 +34,6 @@ public class CatalogEntity implements Serializable {
     @Column(nullable = false)
     private Integer unitPrice;
 
-    @Column(nullable = false, updatable = false, insertable = false)
-    @ColumnDefault(value = "CURRENT_TIMESTAMP")
+    @CreationTimestamp
     private LocalDate createAt;
 }
