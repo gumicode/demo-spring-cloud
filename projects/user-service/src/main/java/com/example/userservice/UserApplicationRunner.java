@@ -18,12 +18,14 @@ public class UserApplicationRunner implements ApplicationRunner {
 
         UserEntity userEntity = new UserEntity();
         userEntity.setUserId("test1");
+        userEntity.setEmail("test1@naver.com");
         userEntity.setName("test1");
         userEntity.setPwd("1234");
         userRepository.save(userEntity);
 
         UserEntity userEntity2 = new UserEntity();
         userEntity2.setUserId("test2");
+        userEntity2.setEmail("test2@naver.com");
         userEntity2.setName("test2");
         userEntity2.setPwd("1234");
         userRepository.save(userEntity2);
