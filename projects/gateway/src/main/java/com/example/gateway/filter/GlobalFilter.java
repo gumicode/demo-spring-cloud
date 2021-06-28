@@ -1,68 +1,40 @@
-package com.example.gateway.config;
+package com.example.gateway.filter;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
-import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
-import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
-@Slf4j
 @Component
-public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Config> {
+public class GlobalFilter extends AbstractGatewayFilterFactory<GlobalFilter.Config> {
 
-    public LoggingFilter() {
+    public GlobalFilter() {
         super(Config.class);
     }
 
     @Override
     public GatewayFilter apply(Config config) {
         // Custom Pre Filter
-//        return (exchange, chain) -> {
-//            ServerHttpRequest request = exchange.getRequest();
-//            ServerHttpResponse response = exchange.getResponse();
-//
-//            System.out.println("Global filter baseMessage : " + config.getBaseMessage());
-//
-//            if(config.isPreLogger()) {
-//                System.out.println("global Filter Start: request id : " + request.getId());
-//            }
-//
-//            //custom post filter
-//            return chain.filter(exchange).then(Mono.fromRunnable(() -> {
-//
-//                if(config.isPostLogger()) {
-//                    System.out.println("global Filter end: request id : " + response.getStatusCode());
-//                }
-//            }));
-//        };
-
-        GatewayFilter filter = new OrderedGatewayFilter((exchange, chain) -> {
-
+        return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
             ServerHttpResponse response = exchange.getResponse();
 
-            System.out.println("Logging filter baseMessage : " + config.getBaseMessage());
+            System.out.println("Global filter baseMessage : " + config.getBaseMessage());
 
             if(config.isPreLogger()) {
-                System.out.println("Logging Filter Start: request id : " + request.getId());
+                System.out.println("global Filter Start: request id : " + request.getId());
             }
 
             //custom post filter
             return chain.filter(exchange).then(Mono.fromRunnable(() -> {
 
                 if(config.isPostLogger()) {
-                    System.out.println("Logging Filter end: request id : " + response.getStatusCode());
+                    System.out.println("global Filter end: request id : " + response.getStatusCode());
                 }
             }));
-
-        }, Ordered.LOWEST_PRECEDENCE);
-
-
-        return filter;
+        };
     }
 
 
