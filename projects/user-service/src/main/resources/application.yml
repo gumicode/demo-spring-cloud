@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: user-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # database driver
     url: jdbc:mysql://localhost:3306/scloud?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul # database url
@@ -28,7 +33,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh,health,beans,httptrace
+        include: refresh,health,beans,httptrace,busrefresh
 
 #token:
 #  expiration_time: 86400000
