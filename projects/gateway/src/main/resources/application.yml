@@ -44,7 +44,7 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/**
-            - Method=GET
+            - Method=GET, POST
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
@@ -53,7 +53,7 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/user-service/actuator/**
-            - Method=GET,POST
+            - Method=GET, POST
           filters:
             - RemoveRequestHeader=Cookie
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
