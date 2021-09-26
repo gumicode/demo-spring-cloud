@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.domain.UserEntity;
 import com.example.userservice.domain.UserRepository;
 import com.example.userservice.dto.UserDto;
@@ -24,6 +25,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final OrderServiceClient orderServiceClient;
 
     public void createUser(UserDto userDto) {
 
@@ -38,13 +40,14 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto getUserByUserId(String userId) {
+
         UserEntity userEntity = userRepository.findByUserId(userId);
-        if(userEntity == null) {
+        if (userEntity == null) {
             throw new RuntimeException("user not found");
         }
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
-        List<ResponseOrder> orders = new ArrayList<>();
+        List<ResponseOrder> orders = orderServiceClient.getOrders(userId);
         userDto.setOrders(orders);
 
         return userDto;
@@ -58,7 +61,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByEmail(username);
 
-        if(userEntity == null) {
+        if (userEntity == null) {
             throw new UsernameNotFoundException(username);
         }
         return new User(userEntity.getEmail(), userEntity.getPwd(), true, true, true, true, new ArrayList<>());

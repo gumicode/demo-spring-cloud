@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class ResponseOrder {
 
     private String productId;
-    private Integer qty;
+    private Integer quantity;
     private Integer unitPrice;
     private Integer totalPrice;
     private LocalDate createAt;
