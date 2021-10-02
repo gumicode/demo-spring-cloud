@@ -1,6 +1,6 @@
 encrypt:
 #  key: abcdefasfweafjakslvjsasaf214130
   key-store:
-    location: file://${user.home}/project/keystore/apiEncryptionKey.jks
+    location: file://${user.home}/keyfile/apiEncryptionKey.jks
     password: 123456
     alias: apiEncryptionKey
