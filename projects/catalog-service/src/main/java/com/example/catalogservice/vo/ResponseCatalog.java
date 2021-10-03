@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseCatalog {
     private String productId;
-    private Integer qty;
+    private Integer stock;
     private Integer unitPrice;
     private Integer totalPrice;
     private LocalDate createdAt;
