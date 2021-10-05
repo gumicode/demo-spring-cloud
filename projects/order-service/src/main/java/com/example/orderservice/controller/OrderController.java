@@ -22,7 +22,6 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("/order-service")
 @RequiredArgsConstructor
 public class OrderController {
 
