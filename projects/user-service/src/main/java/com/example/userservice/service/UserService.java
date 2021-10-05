@@ -6,6 +6,7 @@ import com.example.userservice.domain.UserRepository;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
@@ -50,9 +52,13 @@ public class UserService implements UserDetailsService {
         }
         UserDto userDto = new ModelMapper().map(userEntity, UserDto.class);
 
+        log.info("Before call orders microservice");
+
         CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitBreaker");
         List<ResponseOrder> orders = circuitBreaker.run(() -> orderServiceClient.getOrders(userId),
                 throwable -> new ArrayList<>());
+
+        log.info("After call orders microservice");
 
         userDto.setOrders(orders);
         return userDto;

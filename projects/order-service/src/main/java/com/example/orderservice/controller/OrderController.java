@@ -8,6 +8,7 @@ import com.example.orderservice.service.OrderService;
 import com.example.orderservice.vo.RequestOrder;
 import com.example.orderservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/order-service")
 @RequiredArgsConstructor
@@ -36,6 +38,8 @@ public class OrderController {
 
     @PostMapping("/{userId}/orders")
     public ResponseEntity<ResponseOrder> createOrder(@PathVariable String userId, @RequestBody RequestOrder requestOrder) {
+
+        log.info("Before add order data");
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -55,14 +59,17 @@ public class OrderController {
         kafkaProducer.send("example-catalog-topic", orderDto);
         orderProducer.send("orders2", orderDto);
 
-
         ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
+
+        log.info("Before added order data");
         return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
 
     }
 
     @GetMapping("/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable String userId) {
+
+        log.info("Before retrieve orders microservice");
 
         Iterable<OrderEntity> orders = orderService.getOrdersByUserId(userId);
         List<ResponseOrder> result = new ArrayList<>();
@@ -71,6 +78,7 @@ public class OrderController {
             result.add(new ModelMapper().map(v, ResponseOrder.class));
         });
 
+        log.info("After retrieve orders microservice");
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
